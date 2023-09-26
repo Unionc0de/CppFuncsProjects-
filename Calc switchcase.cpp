@@ -1,5 +1,7 @@
-#include <iostream>
+// Dzshka2.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+//
 
+#include <iostream>
 using namespace std;
 
 
@@ -7,9 +9,10 @@ int main()
 {
     setlocale(LC_ALL, "rus");
     
-    int a,b,c;
+    int b,c;
     
-    cout << "Введите действие:\n1 - сложение \n2 - вычитание \n3 - умножение \n4 - деление ";
+    char a;
+    cout << "Введите действие:\n ";
     cin >> a;
     cout << "Введите числа\n";
     cin >> b;
@@ -17,17 +20,39 @@ int main()
     
 
     switch (a) {
-    case 1:
+    case '+':
         cout << b + c;
         break;
-    case 2:
+    case '-':
         cout << b - c;
         break;
-    case 3:
+    case '*':
         cout << b * c;
         break;
-    case 4:
-        cout << b / c;
+    case '/':
+        if (c == 0) cout << "На ноль делить нельзя";
+
+        else cout << b / c;
+        
         break;
     default:
         cout << "Введено неверное действие ";
+
+
+
+
+
+
+    }
+
+
+    
+    
+
+
+
+
+
+}
+
+
