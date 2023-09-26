@@ -1,49 +1,33 @@
-﻿
-
 #include <iostream>
-using namespace std; 
+
+using namespace std;
+
 
 int main()
 {
-	setlocale(LC_ALL, "rus");
-	float a,b ; 
-	char c;
-	cout << "Введите числа\n";
-	cin >> a;
-	cin >> b;
-	cout << "Введите действие:\n + - Сложение \n - - Вычитание \n * - Умножение \n / - Деление\n";
-	cin >> c;
-	
-	if (c == '+') {
-		cout << "Результат: \n";
-		cout << a + b;
-	}
+    setlocale(LC_ALL, "rus");
+    
+    int a,b,c;
+    
+    cout << "Введите действие:\n1 - сложение \n2 - вычитание \n3 - умножение \n4 - деление ";
+    cin >> a;
+    cout << "Введите числа\n";
+    cin >> b;
+    cin >> c;
+    
 
-	else if (c == '-') {
-		cout << "Результат: \n";
-		cout << a - b;
-	}
-
-	else if (c == '*') {
-		cout << "Результат: \n";
-		cout << a * b;
-	}
-
-	else if  (c == '/') 
-	{
-		if (b == 0) {
-			cout << "На ноль делить нельзя";
-		}
-		else {
-			cout << "Результат: \n";
-			cout << a / b;
-		}
-		
-	}
-}
-
-
-
-
-
-
+    switch (a) {
+    case 1:
+        cout << b + c;
+        break;
+    case 2:
+        cout << b - c;
+        break;
+    case 3:
+        cout << b * c;
+        break;
+    case 4:
+        cout << b / c;
+        break;
+    default:
+        cout << "Введено неверное действие ";
