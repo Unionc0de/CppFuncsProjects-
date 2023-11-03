@@ -1,0 +1,236 @@
+#include <iostream>
+using namespace std;
+int main()
+{
+    setlocale(LC_ALL, "rus");
+    /*char sym; #1
+    int n;
+    
+    cin >> sym;
+    cin >> n;
+
+    for (int i = 0; i <= 5; i++) {
+        cout << " " << endl;
+        for (int j = 0; j <= n; j++) {
+            cout << sym;
+        }
+    }*/
+
+    /*char sym;
+    int w,h;
+
+    cin >> sym;
+    cin >> w >>h;
+
+    for (int i = 0; i < h; i++) {
+        cout << " " << endl;
+        for (int j = 0; j < w; j++) {
+            cout << sym;
+
+        }
+    }*/
+
+
+    /*char sym; 
+    int n;
+
+    cin >> sym;
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cout << " " << endl;
+        for (int j = 0; j < n; j++) {
+            cout << sym;
+        }
+    }*/
+
+    /*char sym; //вывод пустого квадрата
+    int n;
+
+    cin >> sym;
+    cin >> n;
+
+    for (int i = 0; i <= n; i++) {
+        cout << " " << endl;
+        for (int j = 0; j < n; j++) {
+            if (i == 0) {
+                cout << sym;
+            }
+            else if (i == n) {
+                cout << sym;
+            }
+            else if (j == 0 || j == n-1) {
+                cout << sym;
+            }
+            else {
+                cout << " ";
+            }
+        }
+    }*/
+
+    /*int n,ser1=0,ser2=0; //Крест посередине квадрата
+    char sym;
+    cin >> sym;
+    cin >> n;
+
+    if (n % 2 == 0) n++;
+    ser1 = round(n / 2);
+    ser2 = round(n / 2);
+
+    for (int i = 0; i < n; i++) {
+        cout << " " << endl;
+        for (int j = 0; j < n; j++) {
+            if (i == 0) {
+                cout << sym;
+            }
+            else if (i == n-1) {
+                cout << sym;
+            }
+            else if (j == 0 || j == n-1) {
+                cout << sym;
+            }
+            else if (i == ser2) {
+                cout << sym;
+            }
+            else if (j == ser1) {
+                cout << sym;
+            }
+            else {
+                cout << " ";
+            }
+        }
+    }*/
+
+    //int n,ser1=0,ser2=0; //Крест посередине квадрата
+    //char sym;
+    //cin >> sym;
+    //cin >> n;
+
+    //if (n % 2 == 0) n++;
+    //ser1 = round(n / 2);
+    //ser2 = round(n / 2);
+
+    //for (int i = 0; i < n; i++) {
+    //    cout << " " << endl;
+    //    for (int j = 0; j < n; j++) {
+    //        if (i == 0) {
+    //            cout << " ";
+    //        }
+    //        else if (i == n-1) {
+    //            cout << " ";
+    //        }
+    //        else if (j == 0 || j == n-1) {
+    //            cout << " ";
+    //        }
+    //        else if (i == ser1) {
+    //            cout << " ";
+    //        }
+    //        else if (j == ser2) {
+    //            cout << " ";
+    //        }
+    //        else {
+    //            cout << sym;
+    //        }
+    //    }
+    //}
+    
+//int n;
+//cin >> n;
+//if (n % 2 == 0)n++;
+//
+//    for (int i = 0; i <= n; i++) {
+//        cout << " " << endl;
+//        for (int j = 0; j <= n; j++) {
+//            cout << "[" << i <<":" << j<<"]";
+//        }
+//    }
+
+
+//int n; //лесенка
+//cin >> n;
+//char sym = '*';
+//for (int i = 0; i <= n; i++) {
+//    cout << " " << endl;
+//    for (int j = 0; j < i; j++) {
+//        cout << sym;
+//    }
+//}
+
+
+//int n; //лесенка 2
+//cin >> n;
+//char sym = '*';
+//for (int i = 0; i <= n; i++) {
+//    cout << " " << endl;
+//    for (int j = n; j > i; j--) {
+//        cout << sym;
+//    }
+//}
+    
+//int n; //лесенка 3
+//cin >> n;
+//char sym = '*';
+//
+//   for (int i = 0; i < n; i++) {
+//   cout << " " << endl;
+//        for (int j = 0; j < n - i - 1; j++) {
+//            cout << " ";
+//        }
+//        for (int j = 0; j < i + 1; j++) {
+//            cout << sym;
+//        }
+//   }
+
+//int n; //лесенка 4
+//cin >> n;
+//char sym = '*';
+//
+//   for (int i = 0; i < n; i++) {
+//   cout << " " << endl;
+//        for (int j = 0; j < i ; j++) {
+//            cout << " ";
+//        }
+//        for (int j = 0; j < n-i; j++) {
+//            cout << sym;
+//        }
+//   }
+//int n; //треугольник 1
+//cin >> n;
+//char sym = '*';
+//
+//   for (int i = 0; i <= n/2; i++) {
+//        for (int j = 0; j < i ; j++) {
+//            cout <<"  ";
+//        }
+//        for (int j = 0; j < n - i * 2; j++) {
+//            cout << sym << " ";
+//
+//            
+//        }
+//        cout << endl;
+//   }
+
+//int n; //треугольник 2
+//cin >> n;
+//char sym = '*';
+//
+//for (int i = 0; i <= n / 2; i++) {
+//    for (int j = 0; j < n/2-i; j++) {
+//        cout << "  ";
+//    }
+//    for (int j = 0; j < i * 2+1; j++) {
+//        cout << sym << " ";
+//
+//
+//    }
+//    cout << endl;
+//}
+
+
+
+
+
+
+}   
+
+
