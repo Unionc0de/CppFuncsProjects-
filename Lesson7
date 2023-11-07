@@ -1,0 +1,119 @@
+
+
+#include <iostream>
+using namespace std;
+int main()
+{
+    srand(time(NULL));
+    setlocale(LC_ALL, "rus");
+    ////пользователь вводит количество студентов и количество дисцеплин,нужно выставить случайную от 2 до 5 оценку каждому студенту по каждой дисцеплине 
+    //
+    //int stu, dis,sr=0,stu2=0;
+    //cout << "Введите количество студентов\n";
+    //cin >> stu;
+    //cout << "Введите количество дисцеплин \n";
+    //cin >> dis;
+    //
+    //for (int i = 0; i < stu; i++) {
+    //    cout << "N: " << i + 1 <<"\t";
+    //    stu2 = 0;
+    //    for (int j = 0; j < dis; j++) {
+    //        int r = 2 + rand() % (5 + 1 - 2);
+    //        cout << r <<" ";
+    //        sr += r;
+    //        sr = sr / dis;
+    //        if (sr >= 3 && sr <= 4) {
+    //            stu2++;
+    //        }
+    //    }
+    //    cout << endl;
+    //}
+    //cout << "Количество студентов-хорошистов\n" << stu2;
+
+    /*int a,c=0; сумма чисел в многозначном числе
+
+    cout << "введите число";
+    cin >> a;
+
+
+    for (int i = a; i > 0; i /= 10) {
+        c +=i%10;
+
+    }
+
+    cout << c;*/
+
+    /*int index = 0; //минимальное число и его порядковый номер
+    int min = 10 + rand() % (90 + 1 - 2);
+
+    for (int i = 0, k; i < 9; i++) {
+        k = 10 + rand() % (90 + 1 - 2);
+        cout << k << " ";
+        if (k < min) {
+            min = k;
+            index = i;
+        }
+    }
+    cout << min << " index: " << index;*/
+
+    //int array[10]; //заполнение массива рандомными числами и вывод их 
+
+    //for (int i = 0; i < 10; i++) {
+    //    int k = 10 + rand() % (90 + 1 - 2);
+    //    array[i] = k;
+    //    cout << array[i]<<" ";
+    //}
+
+    //int array[10]; //заполнение массива рандомными числами и вывод их и их суммы 
+    //int sum = 0;
+
+    //for (int i = 0; i < 10; i++) {
+    //    int k = 10 + rand() % (90 + 1 - 2);
+    //    array[i] = k;
+    //    cout << array[i]<<" ";
+    //    sum += array[i];
+    //}
+    //
+    //cout << sum << endl;
+
+    //int array[10]; //заполнение массива рандомными числами и вывод их суммы,средне арефметического,минимального и максимального и их индексы
+    //
+    //int sum = 0,sr=0,i1=0,i2=0;
+    //
+    //int a, b;
+    //
+    //cin >> a >> b;
+
+    //int min = a + rand() % (b + 1 - a);
+
+    //int max = a + rand() % (b + 1 - a);
+
+    //for (int i = 0; i < 10; i++) {
+    //    int k = a + rand() % (b + 1 - a);
+    //    array[i] = k;
+    //    cout << array[i]<<" ";
+    //    sum += array[i];
+    //    sr = sum / 10;
+
+    //    if (k < min) {
+    //        min = k;
+    //        i1 = i;
+    //    }
+
+    //    if (k > max) {
+    //        max = k;
+    //        i2 = i;
+    //    }
+
+    //}
+    //cout << endl;
+    //cout << "summa " << sum << endl;
+    //cout << "sr " << sr << endl;
+    //cout << "min " << min << endl;
+    //cout << "index min " << i1 << endl;
+    //cout << "max " << max << endl;
+    //cout << "index max " << i2 << endl;
+
+
+}
+
