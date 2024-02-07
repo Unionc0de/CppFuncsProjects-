@@ -1,0 +1,144 @@
+#include <iostream>
+#define random(min,max) (min + rand() % (max - min + 1))
+using namespace std;
+const int SIZE = 5;
+
+//двумерные динамические массивы
+
+void fillDoubleArray(int** arr) {//функция для заполнения массива 
+    int size1 = _msize(arr) / sizeof(arr[0]);//функция для вычисления длинны массива с указателями(row)
+    int size2 = _msize(arr[0]) / sizeof(arr[0][0]);//функция для вычисления длинны вложенного массива(column)
+    for (int i = 0; i < size1; i++) {//заполнение двумерного динамического массива 
+        for (int j = 0; j < size2; j++) {
+            arr[i][j] = random(1, 100);
+        }
+    }
+}
+
+void showDoubleArray(int** arr) {//функция для вывода массива 
+    int size1 = _msize(arr) / sizeof(arr[0]);//функция для вычисления длинны массива с указателями(row)
+    int size2 = _msize(arr[0]) / sizeof(arr[0][0]);//функция для вычисления длинны вложенного массива(column)
+    for (int i = 0; i < size1; i++) {//вывод двумерного динамического массива 
+        for (int j = 0; j < size2; j++) {
+            cout << arr[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+void addElementDynamicArray(int** &arr,int* arr2) {//добавление нового массива в двумерный(копирование адреса) первый способ 
+    int size1 = _msize(arr) / sizeof(arr[0]);
+    int size2 = _msize(arr[0]) / sizeof(arr[0][0]);
+    int** buf = new int* [size1];
+    
+    for (int i = 0; i < size1; i++) {
+        buf[i] = arr[i];
+    }
+    
+    buf[size1] = arr2;
+    
+    delete[] arr;
+    arr = buf;
+
+}
+
+void addElementDynamicArrayByCopy(int**& arr, int* arr2) {//добавление нового массива в двумерный(копирование элементов) второй способ 
+    int size1 = _msize(arr) / sizeof(arr[0]);
+    int size2 = _msize(arr2) / sizeof(arr2[0]);//размер одноменого массива 
+    
+    int* newArrayCopy = new int [size2];//копия добавляемого массива
+    for (int i = 0; i < size2; i++) {
+        newArrayCopy[i] = arr2[i];
+    }
+    
+    int** buf = new int*[size1+1];
+    for (int i = 0; i < size1; i++) {//копируем все элементы из старого массива в новый
+        buf[i] = arr[i];
+    }
+
+    
+    buf[size1] = newArrayCopy;//в последнюю ячейку добавляем новый массив
+    delete[] arr;
+    arr = buf;
+}
+
+void addElementByIndex(int** &arr, int index, int* arr2) {//добавление массива по индексу 
+    int size1 = _msize(arr) / sizeof(arr[0]);
+    if (index<0 || index > size1 - 1) {
+        cout << "Erorr";
+        return;
+    }
+    int size2 = _msize(arr2) / sizeof(arr2[0]);//размер одноменого массива 
+
+    int* newArrayCopy = new int[size2];//копия добавляемого массива
+    for (int i = 0; i < size2; i++) {
+        newArrayCopy[i] = arr2[i];
+    }
+
+    int** buf = new int*[size1 + 1];
+    for (int i = 0; i < size1; i++) {//копируем все элементы из старого массива в новый
+        buf[i] = arr[i];
+    }
+    
+    buf[index] = newArrayCopy;//добовляем новый элемент по индексу 
+
+    for (int i = index; i < size1; i++) {
+        buf[i+1] = arr[i];
+    }
+
+    delete[] arr;
+    arr = buf;
+
+}
+
+void deleteElementByIndex(int**& arr, int index) {//добавление массива по индексу 
+    int size1 = _msize(arr) / sizeof(arr[0]);
+    if (index<0 || index > size1 - 1) {
+        cout << "Erorr";
+        return;
+    }
+
+    int** buf = new int* [size1];
+    
+    for (int i = 0; i < size1; i++) {//копируем все элементы из старого массива в новый
+        if (i == index) {
+            i--;
+            delete[] arr[i];
+            continue;
+        }
+        buf[i] = arr[i];
+    }
+
+    delete[] arr;
+    arr = buf;
+
+}
+
+
+
+int main()
+{
+    setlocale(LC_ALL, "rus");
+    srand(time(NULL));
+
+    int* a = nullptr;//пустой указатель 
+
+    int row = 5;//длинна массива-указателя
+    int column = 5;//длинна массивов 
+
+    int** array = new int* [row];//создание массивов указателей(указатель на указатель - **)row - количество указателей в массиве указатлелей 
+    int* array2 = new int[column] {10, 25, 32, 43, 45};
+    
+    for (int i = 0; i < row; i++) {//заполнение массива-указателя
+        array[i] = new int[column];
+    }
+
+    fillDoubleArray(array);
+    showDoubleArray(array);
+    addElementByIndex(array,0,array2);
+    cout << endl;
+    showDoubleArray(array);
+    deleteElementByIndex(array, 3);
+    cout << endl;
+    showDoubleArray(array);
+}
