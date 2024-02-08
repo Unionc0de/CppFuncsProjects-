@@ -85,7 +85,7 @@ void addElementByIndex(int**& arr, int index, int* arr2) {//добавление
     for (int i = index; i < size1; i++) {
         buf[i + 1] = arr[i];
     }
-
+    delete[]arr[index];
     delete[] arr;
     arr = buf;
 
