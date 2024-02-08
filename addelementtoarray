@@ -85,7 +85,7 @@ void addElementByIndex(int**& arr, int index, int* arr2) {//добавление
     for (int i = index; i < size1; i++) {
         buf[i + 1] = arr[i];
     }
-    delete[]arr[index];
+
     delete[] arr;
     arr = buf;
 
@@ -108,12 +108,67 @@ void deleteElementByIndex(int** &arr, int index) {//удаление масси�
         buf[i-1] = arr[i];
     }
 
+    delete[] arr[index];
     delete[] arr;
     arr = buf;
 
 }
 
+void addColumnToDynamic(int**& arr, int* arr2) {
+    int size1 = _msize(arr) / sizeof(arr[0]);
+    int size2 = _msize(arr2) / sizeof(arr2[0]);//размер одноменого массива 
 
+    int** buf = new int* [size1];
+    for (int i = 0; i < size1; i++) {
+        buf[i] =new int[size2 + 1];
+    }
+
+    for (int i = 0; i < size1; i++) {
+        for (int j = 0; j < size2;j++) {
+            buf[i][j] = arr[i][j];
+        }
+        buf[i][size2] = arr2[i];
+    }
+    
+    for (int i = 0; i < size1; i++) {
+        delete[] arr[i];   
+    }
+
+    delete[] arr;
+    arr = buf;
+
+}
+
+void addElementByIndexToStr(int**& arr, int index,int num) {
+    int size1 = _msize(arr) / sizeof(arr[0]);
+    int size2 = _msize(arr[0]) / sizeof(arr[0][0]);//функция для вычисления длинны вложенного массива(column)
+    
+
+    int** buf = new int* [size2+1];
+    for (int i = 0; i < size1; i++) {
+        buf[i] = new int[size2 + 1];
+    }
+
+    bool flag = true;
+    for (int i = 0; i < size1; i++) {
+        for (int j = 0; j < size2; j++) {
+            buf[i][j] = arr[i][j];
+        }
+        /*if (flag){
+            buf[i][index] = num;
+            flag = false;
+        }*/
+        buf[i][index] = num;
+        
+    }
+
+    for (int i = 0; i < size1; i++) {
+        delete[] arr[i];
+    }
+
+    delete[] arr;
+    arr = buf;
+}
 
 int main()
 {
@@ -137,7 +192,13 @@ int main()
     addElementByIndex(array, 0, array2);
     cout << endl;
     showDoubleArray(array);
-    deleteElementByIndex(array, 3);
+    deleteElementByIndex(array, 0);
     cout << endl;
+    showDoubleArray(array);
+    /*cout << endl;
+    addColumnToDynamic(array, array2);
+    showDoubleArray(array);*/
+    cout << endl;
+    addElementByIndexToStr(array,1,52);
     showDoubleArray(array);
 }
