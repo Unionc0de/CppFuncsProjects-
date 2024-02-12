@@ -7,8 +7,9 @@ const int SIZE = 5;
 
 void fillDoubleArray(int** arr) {//функция для заполнения массива 
     int size1 = _msize(arr) / sizeof(arr[0]);//функция для вычисления длинны массива с указателями(row)
-    int size2 = _msize(arr[0]) / sizeof(arr[0][0]);//функция для вычисления длинны вложенного массива(column)
+    //int size2 = _msize(arr[0]) / sizeof(arr[0][0]);//функция для вычисления длинны вложенного массива(column)
     for (int i = 0; i < size1; i++) {//заполнение двумерного динамического массива 
+        int size2 = _msize(arr[i]) / sizeof(arr[i][0]);
         for (int j = 0; j < size2; j++) {
             arr[i][j] = random(1, 100);
         }
@@ -17,8 +18,9 @@ void fillDoubleArray(int** arr) {//функция для заполнения м
 
 void showDoubleArray(int** arr) {//функция для вывода массива 
     int size1 = _msize(arr) / sizeof(arr[0]);//функция для вычисления длинны массива с указателями(row)
-    int size2 = _msize(arr[0]) / sizeof(arr[0][0]);//функция для вычисления длинны вложенного массива(column)
+    int size2;
     for (int i = 0; i < size1; i++) {//вывод двумерного динамического массива 
+        size2 = _msize(arr[i]) / sizeof(arr[i][0]);//функция для вычисления длинны вложенного массива(column)
         for (int j = 0; j < size2; j++) {
             cout << arr[i][j] << " ";
         }
@@ -91,21 +93,21 @@ void addElementByIndex(int**& arr, int index, int* arr2) {//добавление
 
 }
 
-void deleteElementByIndex(int** &arr, int index) {//удаление массива по индексу 
+void deleteElementByIndex(int**& arr, int index) {//удаление массива по индексу 
     int size1 = _msize(arr) / sizeof(arr[0]);
     if (index<0 || index > size1 - 1) {
         cout << "Erorr";
         return;
     }
 
-    int** buf = new int* [size1-1];
+    int** buf = new int* [size1 - 1];
 
     for (int i = 0; i < index; i++) {//копируем все элементы из старого массива в новый
         buf[i] = arr[i];
     }
 
     for (int i = index + 1; i < size1; i++) {
-        buf[i-1] = arr[i];
+        buf[i - 1] = arr[i];
     }
 
     delete[] arr[index];
@@ -120,46 +122,14 @@ void addColumnToDynamic(int**& arr, int* arr2) {
 
     int** buf = new int* [size1];
     for (int i = 0; i < size1; i++) {
-        buf[i] =new int[size2 + 1];
-    }
-
-    for (int i = 0; i < size1; i++) {
-        for (int j = 0; j < size2;j++) {
-            buf[i][j] = arr[i][j];
-        }
-        buf[i][size2] = arr2[i];
-    }
-    
-    for (int i = 0; i < size1; i++) {
-        delete[] arr[i];   
-    }
-
-    delete[] arr;
-    arr = buf;
-
-}
-
-void addElementByIndexToStr(int**& arr, int index,int num) {
-    int size1 = _msize(arr) / sizeof(arr[0]);
-    int size2 = _msize(arr[0]) / sizeof(arr[0][0]);//функция для вычисления длинны вложенного массива(column)
-    
-
-    int** buf = new int* [size2+1];
-    for (int i = 0; i < size1; i++) {
         buf[i] = new int[size2 + 1];
     }
 
-    bool flag = true;
     for (int i = 0; i < size1; i++) {
         for (int j = 0; j < size2; j++) {
             buf[i][j] = arr[i][j];
         }
-        /*if (flag){
-            buf[i][index] = num;
-            flag = false;
-        }*/
-        buf[i][index] = num;
-        
+        buf[i][size2] = arr2[i];
     }
 
     for (int i = 0; i < size1; i++) {
@@ -168,6 +138,26 @@ void addElementByIndexToStr(int**& arr, int index,int num) {
 
     delete[] arr;
     arr = buf;
+
+}
+
+void addElementByIndexToStr(int** &arr, int index, int num) {
+    int size1 = _msize(arr) / sizeof(arr[0]);
+    int size2 = _msize(arr[index]) / sizeof(arr[index][0]);//функция для вычисления длинны вложенного массива(column)
+    
+    int* buf = new int[size2 + 1];
+
+    for (int i = 0; i < size2; i++) {
+        buf[i] = arr[index][i]; 
+    }
+
+    buf[size2] = num;
+
+    delete[] arr[index];
+
+    arr[index] = buf;
+
+
 }
 
 int main()
@@ -199,6 +189,6 @@ int main()
     addColumnToDynamic(array, array2);
     showDoubleArray(array);*/
     cout << endl;
-    addElementByIndexToStr(array,1,52);
+    addElementByIndexToStr(array, 0, 52);
     showDoubleArray(array);
 }
