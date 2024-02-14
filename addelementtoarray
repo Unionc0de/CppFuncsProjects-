@@ -11,7 +11,7 @@ void fillDoubleArray(int** arr) {//функция для заполнения м
     for (int i = 0; i < size1; i++) {//заполнение двумерного динамического массива 
         int size2 = _msize(arr[i]) / sizeof(arr[i][0]);
         for (int j = 0; j < size2; j++) {
-            arr[i][j] = random(1, 100);
+            arr[i][j] = random(1, 10);
         }
     }
 }
@@ -116,7 +116,7 @@ void deleteElementByIndex(int**& arr, int index) {//удаление масси�
 
 }
 
-void addColumnToDynamic(int**& arr, int* arr2) {
+void addColumnToDynamic(int**& arr, int* arr2) {//добавление колонки к двумерному массиву
     int size1 = _msize(arr) / sizeof(arr[0]);
     int size2 = _msize(arr2) / sizeof(arr2[0]);//размер одноменого массива 
 
@@ -141,14 +141,14 @@ void addColumnToDynamic(int**& arr, int* arr2) {
 
 }
 
-void addElementByIndexToStr(int** &arr, int index, int num) {
+void addElementByIndexToStr(int**& arr, int index, int num) {//добавление элемента по индексу в конец строки 
     int size1 = _msize(arr) / sizeof(arr[0]);
     int size2 = _msize(arr[index]) / sizeof(arr[index][0]);//функция для вычисления длинны вложенного массива(column)
-    
+
     int* buf = new int[size2 + 1];
 
     for (int i = 0; i < size2; i++) {
-        buf[i] = arr[index][i]; 
+        buf[i] = arr[index][i];
     }
 
     buf[size2] = num;
@@ -156,7 +156,60 @@ void addElementByIndexToStr(int** &arr, int index, int num) {
     delete[] arr[index];
 
     arr[index] = buf;
+}
 
+void deleteElementByStrColumn(int**& arr, int row, int column) {//удаделение элемента по строке и колонке
+    int size1 = _msize(arr) / sizeof(arr[0]);
+    int size2 = _msize(arr[row]) / sizeof(arr[row][0]);
+    int* buf = new int[size2-1];
+
+    for (int i = 0; i < column; i++) {
+        buf[i] = arr[row][i];
+    }
+
+    for (int i = column; i < size2; i++) {
+        buf[i] = arr[row][i+1];
+    }
+
+    delete[] arr[row];
+    arr[row] = buf;
+}
+
+void deleteElementByValue(int**& arr, int val) {//удаление элемента по значению
+    int size1 = _msize(arr) / sizeof(arr[0]);
+    int size2 = _msize(arr[0]) / sizeof(arr[0][0]);
+    int index1 = -1;
+    int index2 = -1;
+
+    bool flag = false;
+    for (int i = 0; i < size1; i++) {
+        for (int j = 0; j < size2; j++) {
+            if (arr[i][j] == val) {
+                index1 = i;
+                index2 = j;
+                break;
+                flag = true;
+            }
+        }
+        if (flag) {
+            break;
+        }
+    }
+    
+
+    if (index1 != -1 && index2 != -1) {
+        int* buf = new int[size2-1];
+        for (int i = 0; i < index2; i++) {
+            buf[i] = arr[index1][i];
+        }
+
+        for (int i = index2; i < size2; i++) {
+            buf[i] = arr[index1][i + 1];
+        }
+
+        delete[] arr[index1];
+        arr[index1] = buf;
+    }
 
 }
 
@@ -179,16 +232,23 @@ int main()
 
     fillDoubleArray(array);
     showDoubleArray(array);
-    addElementByIndex(array, 0, array2);
-    cout << endl;
+    /*addElementByIndex(array, 0, array2);*/
+ /*   cout << endl;
     showDoubleArray(array);
     deleteElementByIndex(array, 0);
     cout << endl;
-    showDoubleArray(array);
+    showDoubleArray(array);*/
     /*cout << endl;
     addColumnToDynamic(array, array2);
     showDoubleArray(array);*/
-    cout << endl;
+   /* cout << endl;
     addElementByIndexToStr(array, 0, 52);
     showDoubleArray(array);
+    cout << endl;
+    deleteElementByStrColumn(array, 3, 3);
+    showDoubleArray(array);*/
+    cout << endl;
+    deleteElementByValue(array, 3);
+    showDoubleArray(array);
+
 }
