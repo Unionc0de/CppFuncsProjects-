@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 #define random(min,max) (min + rand() % (max - min + 1))
 using namespace std;
@@ -12,20 +12,47 @@ class Student {//Создание класса студент, поля по у�
 private://Делает поля после двоеточия локальными для этого класса  
     string name;//Поле
     int age;
-public: 
+    int* marks = new int[10];
+public:
     Student(string name) {//конструктор для заполнения полей, должен быть всегда public 
         this->name = name;//this - указатель для полей
     }
-    
-    Student(string name, int age):Student(name)//Вызов конструктора внутри констурктора 
+
+    Student(string name, int age) :Student(name)//Вызов конструктора внутри констурктора 
     {//перегрузка для конструктора
         this->age = age;//this - указатель для полей
+    }
+
+    Student(const Student &st) //Конуструктор копирования, создает абсолтюную копию объекта с теми же параметрами
+    {
+        this->name = st.name;
+        this->age = st.age;
+        
+        int size = _msize(st.marks) / sizeof(st.marks[0]);
+        marks = new int[size];
+        for (int i = 0; i < size; i++)
+        {
+            marks[i] = st.marks[i];
+        }
+    }
+
+    Student operator =(const Student& st) //Конуструктор копирования, создает абсолтюную копию объекта с теми же параметрами
+    {
+        this->name = st.name;
+        this->age = st.age;
+
+        int size = _msize(st.marks) / sizeof(st.marks[0]);
+        marks = new int[size];
+        for (int i = 0; i < size; i++)
+        {
+            marks[i] = st.marks[i];
+        }
     }
 
     void setName(string name) {//Создание сэтера, который меняет значения private, название начинается c get
         this->name = name;
     }
-    
+
     void setAge(int age) {//Создание сэтера, который меняет значения private, название начинается c get
         this->age = age;
     }
@@ -41,6 +68,59 @@ public:
 
     void showInfo() {
         cout << "Name: " << this->name << "\nAge:  " << this->age << endl;
+        cout << "Marks: " << endl;
+        for (int i = 0; i < 10; i++)
+        {
+            cout << marks[i] << " ";
+        }
+        cout << endl;
+    }
+
+    void setMark(int index, int mark) {
+        marks[index] = mark;
+    }
+
+    bool operator == (const Student& st)//Перегрузка опреатора == (сравнения)
+    {
+        if (this == &st) //this - ссылка на текущий объект 
+        {
+            return true; // Проверка на один и тот же объект
+        }
+        
+        bool flag = true;
+        int size = _msize(this->marks) / sizeof(this->marks[0]);
+        int size2 = _msize(st.marks) / sizeof(st.marks[0]);
+        
+        if (size != size2) 
+        {
+            return false;
+        }
+        
+        for (int i = 0; i < size; i++)
+        {
+            if (this->marks[i] != st.marks[i]) 
+            {
+                flag = false;
+                break;
+            }
+        }
+        return (this->name == st.name && this->age == st.age && flag);
+    }
+
+    void operator + (const Student& st) {//Сумма возрастов двух студентов
+        this->age + st.age;
+    }
+
+    void operator += (int num) {//Прибавить возраст
+        this->age += num;
+    }
+
+    void operator += (float num) {//Прибавить возраст(перегрузка)
+        this->age -= num;
+    }
+
+    ~Student() {//Удаление студента(диструктор), для создания поставить ~
+        delete[] this->marks;
     }
 };
 
@@ -50,10 +130,30 @@ int main()
     setlocale(LC_ALL, "rus");
     srand(time(NULL));
 
-    Student st1("Pizda",52);//Создание объекта с помощью конструктора 
-    st1.showInfo();
-    st1.setAge(st1.getAge() + 1);//увеличение возраста на 1
-    st1.showInfo();
-}
+    Student* st1 = new Student("Pizda", 52);//Создание объекта с помощью конструктора 
 
+    //st2->setAge(53);
+    //st2->showInfo();
+
+    for (int i = 0; i < 10; i++)
+    {
+        st1->setMark(i, random(1, 5));
+    }
+    //Student* st2 = new Student(st1); //Правильное копирование объекта
+    //
+    //st1->showInfo();
+    //st2.showInfo();
+    //cout << endl;
+    ////st2.setMark(0, 9);
+    //st1->showInfo();
+    //st2.showInfo();
+    //cout << endl;
+    //cout << (st1 == st2) << endl;
+    //st1 += 5;
+    //st1.showInfo();
+
+
+
+
+}
 
