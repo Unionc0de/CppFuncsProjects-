@@ -9,12 +9,12 @@ public:
     int horsePower;
 
     Car() {};
-    
-    Car(string name,int horsePower) {
+
+    Car(string name, int horsePower) {
         this->horsePower = horsePower;
         this->name = name;
     }
-    
+
     void drive() {
         cout << "drive" << endl;
     }
@@ -29,27 +29,52 @@ public:
 class ElectroCar : public Car { //Наследование класса car(Всегда надо писать public). Наследование - когда один класс наследует поля и методы другого класса 
 public:
     int charge;
-    
-    ElectroCar(string name, int horsePower,int charge): Car(name,horsePower) {//Вызов метода другого класса 
+
+    ElectroCar(string name, int horsePower, int charge) : Car(name, horsePower) {//Вызов метода другого класса 
+        this->charge = charge;
+    }
+    ElectroCar(int charge){//Вызов метода другого класса 
         this->charge = charge;
     }
 
-    void info(){
+    void info() {
         Car::info();//Вызов метода в другом классе 
         cout << "charge: " << this->charge << endl;
     }
 };
 
-class CombustionCar : public Car {
+class CombustionCar : public Car {//Иерархическое(когда от одного класса несколько наследований) 
+public:
     int engineCapacity;
 
     CombustionCar(string name, int horsePower, int capacity) : Car(name, horsePower) {
         this->engineCapacity = capacity;
     }
 
+    CombustionCar(int capacity) {
+        this->engineCapacity = capacity;
+    }
+
     void info() {
         Car::info();//Вызов метода в другом классе 
         cout << "Engine Capacity: " << this->engineCapacity << endl;
+    }
+};
+
+class HybridCar:public CombustionCar, public ElectroCar, public Car {//множественное наследование от двух других классов
+public:
+    HybridCar(string name, int horsePower, int charge, int engineCapacity) :
+        ElectroCar(name,horsePower,charge), 
+        CombustionCar(engineCapacity) {
+
+    }
+
+    void info() {
+        /*cout << "Name: " << Car::name << endl;
+        cout << "HP: " << Car::horsePower << endl;
+        cout << "Charge: " << charge << endl;*/
+        ElectroCar::info();
+        cout << "Engine capacity: " << engineCapacity << endl;
     }
 };
 
@@ -60,7 +85,11 @@ int main()
     Car car1("BMW M3 Touring", 700);//Класс родитель 
     car1.info();
 
-    ElectroCar electro1("ElectroCar1",400,1500);
+    ElectroCar electro1("ElectroCar1", 400, 1500);
     electro1.info();
 
+    HybridCar hr1("Hybrid car 1",800,2000,3);
+    hr1.info();
+
 }
+    
