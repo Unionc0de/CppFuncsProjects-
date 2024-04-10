@@ -1,0 +1,66 @@
+#include <iostream>
+#include <string>
+#define random(min,max) (min + rand() % (max - min + 1))
+using namespace std;
+
+class Car {
+public:
+    string name;
+    int horsePower;
+
+    Car() {};
+    
+    Car(string name,int horsePower) {
+        this->horsePower = horsePower;
+        this->name = name;
+    }
+    
+    void drive() {
+        cout << "drive" << endl;
+    }
+
+    void info() {
+        cout << "Name: " << this->name << endl;
+        cout << "HP:" << this->horsePower << endl;
+        cout << "\n\n";
+    }
+};
+
+class ElectroCar : public Car { //Наследование класса car(Всегда надо писать public). Наследование - когда один класс наследует поля и методы другого класса 
+public:
+    int charge;
+    
+    ElectroCar(string name, int horsePower,int charge): Car(name,horsePower) {//Вызов метода другого класса 
+        this->charge = charge;
+    }
+
+    void info(){
+        Car::info();//Вызов метода в другом классе 
+        cout << "charge: " << this->charge << endl;
+    }
+};
+
+class CombustionCar : public Car {
+    int engineCapacity;
+
+    CombustionCar(string name, int horsePower, int capacity) : Car(name, horsePower) {
+        this->engineCapacity = capacity;
+    }
+
+    void info() {
+        Car::info();//Вызов метода в другом классе 
+        cout << "Engine Capacity: " << this->engineCapacity << endl;
+    }
+};
+
+int main()
+{
+    setlocale(LC_ALL, "rus");
+    srand(time(NULL));
+    Car car1("BMW M3 Touring", 700);//Класс родитель 
+    car1.info();
+
+    ElectroCar electro1("ElectroCar1",400,1500);
+    electro1.info();
+
+}
