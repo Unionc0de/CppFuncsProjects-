@@ -1,0 +1,157 @@
+#include <iostream>
+#include <string>
+#define random(min,max) (min + rand() % (max - min + 1))
+using namespace std;
+const int SIZE = 5;
+
+class Transport {
+
+public:
+    virtual void move() = 0;
+    virtual void sound() = 0;
+};
+
+class WaterTransport : public Transport {
+};
+
+class GroundTransport : public Transport {
+};
+
+
+class AirTransport : public Transport {
+};
+
+
+class Car : public GroundTransport {
+    int horsePower;
+public:
+    
+    Car(int horsePower) {
+        this->horsePower = horsePower;
+    }
+    
+    void move() {
+        cout << "Riding car" << endl;
+    }
+
+    void sound() {
+        cout << "Vruuum boom boom vruuuum" << endl;
+    }
+};
+
+
+
+class Bicycle : public GroundTransport {
+    int speedCounter;
+public:
+    
+    Bicycle(int speedCounter) {
+        this->speedCounter = speedCounter;
+    }
+    
+    void move() {
+        cout << "Riding bicycle" << endl;
+    }
+
+    void sound() {
+        cout << "Nothing" << endl;
+    }
+};
+
+class Train : public GroundTransport {
+    int carriages;
+public:
+    Train(int carriages) {
+        this->carriages = carriages;
+    }
+    void move() {
+        cout << "Riding train" << endl;
+    }
+
+    void sound() {
+        cout << "Tuk Tuk Tuk Tuk" << endl;
+    }
+};
+
+class Boat : public WaterTransport {
+    int capacity;
+public:
+    Boat(int capacity) {
+        this->capacity = capacity;
+    }
+
+    void move() {
+        cout << "Swimming boat" << endl;
+    }
+
+    void sound() {
+        cout << "PLUH PLUH PLUH" << endl;
+    }
+};
+
+class Submarine : public WaterTransport {
+    int length;
+public:
+    Submarine(int length) {
+        this->length = length;
+    }
+
+    void move() {
+        cout << "Swimming submarine" << endl;
+    }
+
+    void sound() {
+        cout << "PLUH PLUH PLUH BOOM BOOM BOOM PLUH" << endl;
+    }
+};
+
+
+class Plane : public AirTransport {
+    int capacity;
+public:
+    Plane(int capacity) {
+        this->capacity = capacity;
+    }
+
+    void move() {
+        cout << "Flying Plane" << endl;
+    }
+
+    void sound() {
+        cout << "VROOOOOM VROOOOM BABABABAH" << endl;
+    }
+};
+
+class Helicopter : public AirTransport {
+    int capacity;
+public:
+    Helicopter(int capacity) {
+        this->capacity = capacity;
+    }
+
+    void move() {
+        cout << "Flying Helicopter" << endl;
+    }
+
+    void sound() {
+        cout << "VROOOOOM VROOOOM BABABABAH AAAAAAAAAA" << endl;
+    }
+};
+
+
+class WaterParking {
+public:
+    string name;
+    WaterTransport** transports = new WaterTransport * [0];
+
+    WaterParking(string name) {
+        this->name = name;
+    }
+
+};
+
+int main()
+{
+    setlocale(LC_ALL, "rus");
+    srand(time(NULL));
+}
