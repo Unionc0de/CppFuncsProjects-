@@ -1,0 +1,72 @@
+#include <iostream>
+#include <string>
+#define random(min,max) (min + rand() % (max - min + 1))
+using namespace std;
+//Полиморфизм - переопределение методов у дочерних классов 
+
+class Weapon {//Абстрактный класс без конкретики, в нем не должно быть больше одного виртуального класса и его нельзя вызвать
+
+public:
+	virtual void use() = 0;// = 0 значит без наполнения
+};
+
+class Gun : public Weapon
+{
+public:
+	Gun(){
+		cout << "Создание" << endl;
+	}
+	~Gun() {
+		cout << "Удаление" << endl;
+	}
+
+	virtual void use() {//Virtual позволяет переопредлить метод у дочернего класса ы
+		cout << "Бум бам бабах" << endl;
+	}
+
+};
+
+class SubmachineGun: public Gun {
+public:
+	void use() override{//override помогает убедится в том, что при переопределении вы указываете правильные значение в методе
+		cout << "Бум бам бабабабабабабабабх" << endl;
+	}
+};
+
+class RPG : public Weapon {
+public:
+	void use() override {//override помогает убедится в том, что при переопределении вы указываете правильные значение в методе
+		cout << "БАБАБАБАБАХ" << endl;
+	}
+};
+
+class Player {
+public:
+	Weapon* firstWeapon;
+	Weapon* secondWeapon;
+	Gun* pistolWeapon;
+
+	Player(Weapon* firstWeapon, Weapon* secondWeapon, Gun* pistolWeapon) {
+		this->firstWeapon = firstWeapon;
+		this->secondWeapon = secondWeapon;
+		this->pistolWeapon = pistolWeapon;
+	}
+
+	void useWeapon(Weapon* gun) {
+		gun->use();
+	}
+};
+
+int main()
+{
+    setlocale(LC_ALL, "rus");
+    srand(time(NULL));
+	Gun gun1 = Gun();
+	SubmachineGun gun2 = SubmachineGun();
+
+	Gun* pgun = &gun2;
+	//pgun->use();
+
+	/*Player p1;
+	p1.useWeapon(&gun2);*/
+}
