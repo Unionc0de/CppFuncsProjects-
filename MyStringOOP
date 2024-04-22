@@ -12,11 +12,15 @@ private:
 
 public:
     MyString() {
-        str = nullptr;
+        str = new char[] {'\0'};
     }
 
     MyString(const char* str) {
         this->str = strCopy(str);
+    }
+
+    MyString(const MyString& other) {
+        this->str = strCopy(other.str);
     }
 
     void print() {
@@ -41,26 +45,101 @@ public:
     }
 
     MyString& operator+(const MyString& str1) {
-        int length = strlen(str1.str) + strlen(this->str);
-        char* newStr = new char[length + 1];
-        MyString str3(newStr);
-        for (int i = 0; i < strlen(str1.str); i++)
-        {
-            newStr[i] = str1.str[i];
-        }
+        MyString* newStr = new MyString;
+        *newStr += *this;
+        *newStr += str1;
+        return *newStr;
+    }
 
-        for (int i = strlen(str1.str); i < length; i++)
+    void operator +=(const MyString& other) {
+        int length1 = strlen(this->str);
+        int length2 = strlen(other.str);
+        char* newStr = new char[length1+ length2 + 1];
+
+        for (int i = 0; i < length1; i++)
         {
             newStr[i] = this->str[i];
         }
 
-        newStr[length] = '\0';
+        for (int i = 0; i < length2; i++)
+        {
+            newStr[strlen(this->str) + i] = other.str[i];
+        }
 
-        return str3;
-
+        newStr[length1 + length2] = '\0';
+        delete[] this->str;
+        this->str = newStr;
     }
 
+    int length() {
+        return strlen(this->str);
+    }
 
+    friend ostream& operator <<(ostream& out, MyString& myStr) {//Переопределение cout
+        out << myStr.str;
+        return out;
+    }
+
+    char& operator [](int index) {//Переопределние оператора [] для вывода элемента строки по индексу
+        if (index >= this->length()&& index < 0) {
+            throw;//Вывести ошибку
+        }
+        return this->str[index];
+    }
+
+    bool operator ==(const MyString& other) {
+        int length1 = strlen(this->str);
+        int length2 = strlen(other.str);
+
+        if (length1 != length2) {
+            return false;
+        }
+
+        else {
+            for (int i = 0; i < length1; i++)
+            {
+                if (this->str[i] != other.str[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    bool operator !=(const MyString& other) {
+        int length1 = strlen(this->str);
+        int length2 = strlen(other.str);
+
+        if (length1 != length2) {
+            return true;
+        }
+
+        else {
+            for (int i = 0; i < length1; i++)
+            {
+                if (this->str[i] != other.str[i]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    bool operator > (const MyString& other) {//Не доделал 
+        int length1 = strlen(this->str);
+        int length2 = strlen(other.str);
+
+        if (other.str == this->str) {
+            return false;
+        }
+
+        else if (length2 > length1) {
+            for (int i = 0; i < length2; i++)
+            {
+                
+            }
+        }
+    }
 
 private:
     char* strCopy(const char* str) {
@@ -86,9 +165,13 @@ int main()
 
     /*char* test = new char[] {"1234"};
     MyString str1 = test;*/
-    MyString str1("Test1");
-    MyString str2("Test2");
-    MyString str3 = str1+str2;
-    str3.print();
+    MyString str1("Test3");
+    MyString str2("Test1");
+    /*MyString str3 = str1+str2;
+    str3.print();*/
+    /*str1 += str2;
+    str1.print();*/
+    /*cout << str3;*/
+    cout << (str1 != str2);
     
 }
