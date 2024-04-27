@@ -1,0 +1,135 @@
+#include <iostream>
+#include <string>
+#define random(min,max) (min + rand() % (max - min + 1))
+using namespace std;
+const int SIZE = 5;
+
+
+template <typename T>
+class MyStack {
+private:
+    T* elements;
+    int capacity;
+    int topIndex;
+public:
+    MyStack() :capacity(10), topIndex(-1) {//Задаем значение по умолчанию 
+        elements = new T[capacity];
+    }
+
+    MyStack(const MyStack& newStack) {//конструктор копирования
+        this->capacity = newStack.capacity;
+        this->topIndex = newStack.topIndex;
+        this->elements = new T[newStack.capacity];
+        for (int i = 0; i <= newStack.topIndex; i++)
+        {
+            this->elements[i] = newStack.elements[i];
+        }
+    }
+
+    ~MyStack() {
+        delete[] this->elements;
+    }
+
+    MyStack& operator =(const MyStack& newStack) {
+        delete[] this->elements;
+        this->capacity = newStack.capacity;
+        this->topIndex = newStack.topIndex;
+        this->elements = new T[newStack.capacity];
+        for (int i = 0; i <= newStack.topIndex; i++)
+        {
+            this->elements[i] = newStack.elements[i];
+        }
+        return *this;
+    }
+
+    bool operator ==(const MyStack& newStack) {
+        if (this->topIndex != newStack.topIndex) {
+            return false;
+        }
+        else {
+            for (int i = 0; i < this->topIndex; i++)
+            {
+                if (this->elements[i] != newStack.elements[i]) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    }
+
+    void push(const T& elem) {//Добавление элемента в конец 
+        if (topIndex >= capacity) {
+            capacity *= 2;
+            T* buf = new T[capacity];
+            for (int i = 0; i < capacity; i++)
+            {
+                buf[i] = elements[i];
+            }
+            delete[] elements;
+            this->elements = buf;
+        }
+        elements[++topIndex] = elem;
+    }
+
+    void pop() {//Удаление элемента в конце 
+        if (empty() == true)
+        {
+            cout << "Массив пуст" << endl;
+            return;
+        }
+        else {
+            topIndex--;
+        }
+    }
+
+    void set(const T& elem) {
+        if (empty()) {
+            cout << "Массив пуст" << endl;
+        }
+        elements[topIndex] = elem;
+    }
+
+    T& top() {
+        if (empty()) {
+            cout << "Массив пуст" << endl;
+            
+        }
+        return elements[topIndex];
+    }
+
+    void show() {//Вывод всех элементов 
+        for (int i = 0; i < topIndex+1; i++)
+        {
+            cout << elements[i] << " ";
+        }
+        cout << endl;
+        cout << endl;
+    }
+
+    bool empty() {
+        if (topIndex <= -1) {
+            return true;
+        }
+        return false;
+    }
+    
+};
+
+
+int main()
+{
+    setlocale(LC_ALL, "rus");
+    srand(time(NULL));
+
+    MyStack<int> stack;
+    stack.push(1);
+    stack.push(12);
+    stack.push(13);
+    MyStack<int> newStack;
+    newStack = stack;
+    stack.show();
+    newStack.show();
+    cout << (newStack == stack) << endl;
+
+    
+}
