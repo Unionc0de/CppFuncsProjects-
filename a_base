@@ -2,7 +2,10 @@
 #include <string>
 #define random(min,max) (min + rand() % (max - min + 1))
 using namespace std;
-const int SIZE = 5;
+
+class My {
+
+};
 
 int main()
 {
