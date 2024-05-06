@@ -4,6 +4,9 @@
 using namespace std;
 
 class My {
+private:
+
+public:
 
 };
 
