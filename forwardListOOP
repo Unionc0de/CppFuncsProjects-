@@ -1,0 +1,279 @@
+#include <iostream>
+#include <string>
+#define random(min,max) (min + rand() % (max - min + 1))
+using namespace std;
+
+template <typename T>
+class MyForwardList{
+private:
+    class Node {
+    public:
+        T elem;
+        Node* next;
+
+        Node(const T& value) :elem(value), next(nullptr){};
+    };
+    int size = 0;
+    Node* head;
+
+public:
+    MyForwardList() : head(nullptr){};
+
+    ~MyForwardList() {
+        if (!this->empty()) {
+            Node* cur = head;
+            while (cur->next != nullptr)
+            {
+                Node* buf = cur->next;
+                delete cur;
+                cur = buf;
+            }
+            delete cur;
+        }
+    } 
+
+    MyForwardList(const MyForwardList& otherList) {
+        if(!otherList.empty()) {
+            this->head = new Node(otherList.head->elem);
+            Node* cur1 = this->head;
+            Node* cur2 = otherList.head;
+            cur2 = cur2->next;
+
+            while (true)
+            {
+                if (cur2 == nullptr) {
+                    break;
+                }
+                cur1->next = new Node(cur2->elem);
+                cur2 = cur2->next;
+                cur1 = cur1->next;
+            }
+       }
+    }
+
+    bool empty()const {
+        return head == nullptr;
+    }
+    
+    void pushFront(const T& value) {
+        Node* newNode = new Node(value);
+        newNode->next = head;
+        head = newNode;
+        size++;
+    }
+
+    void popFront() {
+        if (empty()) {
+            cout << "Массив пуст"<<endl;
+            return;
+        }
+        
+        Node* buf = head->next;
+        delete head;
+        head = buf;
+    }
+
+    void pushBack(const T& value ) {
+        if (empty()) {
+            head = new Node(value);
+        }
+        Node* cur = head;
+        Node* newNode = new Node(value);
+        while (cur->next != nullptr) {
+            cur = cur->next;
+        }
+        cur->next = newNode;
+        size++;
+    }
+
+    void popBack() {
+        if (empty()) {
+            cout << "Массив пуст" << endl;
+            return;
+        }
+
+        Node* cur = head;
+        while ((cur->next)->next != nullptr) {
+            cur = cur->next;
+        }
+        delete cur->next;
+        cur->next= nullptr;
+    }
+
+    void insertAfter(int index,const T& value) {
+        if (empty() || index < 0) {
+            cout << "Массив пуст" << endl;
+            return;
+        }
+        Node* cur = head;
+
+        for (int i = 0; i < index; i++)
+        {
+            if (cur->next == nullptr) {
+                cout << "Массив пуст" << endl;
+                return;
+            }
+            cur = cur->next;
+        }
+
+        Node* buf = cur->next;
+        cur->next = new Node(value);
+        cur->next->next = buf;
+    }
+
+    void emplace(int index, const T& value) {
+        if (empty()||index < 0) {
+            cout << "Массив пуст" << endl;
+            return;
+        }
+        Node* cur = head;
+
+        for (int i = 0; i <= index; i++)
+        {
+            if (cur->next == nullptr) {
+                cout << "Массив пуст" << endl;
+                return;
+            }
+            cur = cur->next;
+        }
+
+        cur->elem = value;
+    }
+
+    void clear() {
+        if (empty()) {
+            return;
+        }
+        
+        Node* cur = head;
+        while (cur->next != nullptr)
+        {
+            Node* buf = cur->next;
+            delete cur;
+            cur = buf;
+        }
+        delete cur;
+        this->head = nullptr;
+    }
+
+    T& front() {
+        return this->head->elem;
+    }
+
+    void show() {
+        Node* cur = head;
+        while (cur->next != nullptr) {
+            cout << cur->elem << " ";
+            cur = cur->next;
+        }
+        cout << cur->elem << endl;
+    }
+
+    bool operator ==(const MyForwardList& otherList) {
+        Node* cur1 = this->head;
+        Node* cur2 = otherList->head;
+
+        while (true)
+        {
+            if ((cur1 == nullptr && cur2 != nullptr) || (cur2 == nullptr && cur1 != nullptr)) {
+                return false;
+            }
+            else if (cur1 == nullptr && cur2 == nullptr) {
+                break;
+            }
+            else if (cur1->elem != cur2->elem) {
+                return false;
+            }
+            cur1 = cur1->next;
+            cur2 = cur2->next;
+        }
+        return true;
+    }
+
+    bool operator !=(const MyForwardList& otherList) {
+        return!(*this == otherList);
+    }
+
+    MyForwardList& operator = (const MyForwardList& otherList) {
+        this->clear();
+        this->head = new Node(otherList.head->elem);
+        Node* cur1 = this->head;
+        Node* cur2 = otherList.head;
+        cur2 = cur2->next;
+
+        while (true)
+        {
+            if (cur2 == nullptr) {
+                break;
+            }
+            cur1->next = new Node(cur2->elem);
+            cur2 = cur2->next;
+            cur1 = cur1->next;
+        }
+
+        return *this;
+    }
+
+    class  Iterator{
+    private:
+        Node* ptr;
+    public:
+        Iterator(Node* pointer) {
+            this->ptr = pointer;
+        }
+
+        T& operator*() const {
+            return ptr->elem;
+        }
+
+        bool operator ==(const Iterator& other) {
+            return this->ptr == other.ptr;
+        }
+
+        bool operator !=(const Iterator& other) {
+            return this->ptr != other.ptr;
+        }
+        
+        Node& operator =(const T& other) {
+            return this->ptr = other.ptr;
+        }
+
+        Iterator& operator++() {//Постфиксный 
+            ptr = ptr->next;
+            return *this;
+        }
+    };
+
+    Iterator begin() {
+        return Iterator(this->head);
+    }
+
+    Iterator end() {
+        return Iterator(nullptr);
+    }
+};
+
+int main()
+{
+    setlocale(LC_ALL, "rus");
+    srand(time(NULL));
+
+    MyForwardList <int> list1;
+
+    list1.pushFront(3);
+    list1.pushFront(4);
+    list1.pushFront(5);
+    //list1.show();
+    MyForwardList <int> list2 = list1 ;
+    //list2.show();
+
+    list2.emplace(1, 9);
+/*    list1.show();
+    list2.show()*/;
+
+    for (auto el : list1) {
+        cout << el << " ";
+    }
+
+
+} 
