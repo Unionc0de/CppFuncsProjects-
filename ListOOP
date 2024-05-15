@@ -1,0 +1,408 @@
+#include <iostream>
+#include <string>
+#define random(min,max) (min + rand() % (max - min + 1))
+using namespace std;
+
+template <typename T>
+class MyList {
+public:
+    class Node {
+    public:
+        T elem;
+        Node* next;
+        Node* prev;
+        Node(const T& value) :elem(value), next(nullptr), prev(nullptr) {};
+    };
+    Node* head;
+    Node* tail;
+    int size = 0;
+    
+    void find(Node*& cur, int index) {
+        if ((index + 1) < (size / 2)) {
+            cur = head;
+            for (int i = 0; i < index; i++)
+            {
+                cur = cur->next;
+            }
+        }
+        else {
+            cur = tail;
+            for (int i = size - 1; i > index; i--)
+            {
+                cur = cur->prev;
+            }
+        }
+    }
+
+
+public:
+    MyList() : head(nullptr), tail(nullptr) {};
+
+    ~MyList() {
+        if (!this->empty()) {
+            Node* cur = head;
+            while (cur->next != nullptr)
+            {
+                Node* buf = cur->next;
+                delete cur;
+                cur = buf;
+            }
+            delete cur;
+        }
+    }
+
+    MyList(const MyList& otherList) {
+        if (!otherList.empty()) {
+            this->head = new Node(otherList.head->elem);
+            Node* start = this->head;
+            Node* cur2 = otherList.head;
+            cur2 = cur2->next;
+            this->size = otherList.size;
+            while (true)
+            {
+                if (cur2 == nullptr) {
+                    break;
+                }
+                start->next = new Node(cur2->elem);
+                cur2 = cur2->next;
+                start = start->next;
+            }
+        }
+    }
+
+    bool empty()const {
+        return head == nullptr;
+    }
+
+    void pushFront(const T& value) {
+        Node* newNode = new Node(value);
+        if (this->empty()) {
+            head = newNode;
+            tail = newNode;
+        }
+        else {
+            head->prev = newNode;
+            newNode->next = head;
+            head = newNode;
+        }
+            size++;
+
+    }
+
+    void popFront() {
+        if (empty()) {
+            cout << "Массив пуст" << endl;
+            return;
+        }
+
+        if (head->next == nullptr) {
+            delete head;
+            head = nullptr;
+            tail = nullptr;
+        }
+        else {
+            Node* buf = head->next;
+            delete head;
+            head = buf;
+            head->prev = nullptr;
+            size--;
+        }
+    }
+
+    void pushBack(const T& value) {
+        if (empty()) {
+            head = new Node(value);
+            tail = new Node(value);
+        }
+        tail->next = new Node(value);
+        tail->next->prev = tail;
+        tail = tail->next;
+        size++;
+    }
+
+    void popBack() {
+        if (empty()) {
+            cout << "Массив пуст" << endl;
+            return;
+        }
+
+        tail = tail->prev;
+        delete tail->next;
+        tail->next = nullptr;
+        size--;
+    }
+
+    void insertAfter(int index, const T& value) {
+        if (empty() || index < 0|| index >= size) {
+            cout << "Ошибка!" << endl;
+            return;
+        }
+        Node* cur;
+        find(cur, index);
+        Node* buf = cur->next;
+        cur->next = new Node(value);
+        cur->next->next = buf;
+        cur->next->prev = cur;
+        buf->prev = cur->next;
+        size++;
+
+    }
+
+    void emplace(int index, const T& value) {
+        if (empty() || index < 0) {
+            cout << "Массив пуст" << endl;
+            return;
+        }
+        Node* cur = head;
+
+        for (int i = 0; i <= index; i++)
+        {
+            if (cur->next == nullptr) {
+                cout << "Массив пуст" << endl;
+                return;
+            }
+            cur = cur->next;
+        }
+
+        cur->elem = value;
+    }
+
+    void clear() {
+        if (empty()) {
+            return;
+        }
+
+        Node* cur = head;
+        while (cur->next != nullptr)
+        {
+            Node* buf = cur->next;
+            delete cur;
+            cur = buf;
+        }
+        delete cur;
+        this->head = nullptr;
+        this->size = 0;
+    }
+
+    T& front() {
+        return this->head->elem;
+    }
+
+    T& back() {
+        return this->tail->elem;
+    }
+
+    void show() {
+        Node* cur = head;
+        while (cur->next != nullptr) {
+            cout << cur->elem << " ";
+            cur = cur->next;
+        }
+        cout << cur->elem << endl;
+    }
+
+    bool operator ==(const MyList& otherList) {
+        Node* start = this->head;
+        Node* cur2 = otherList->head;
+
+        while (true)
+        {
+            if ((start == nullptr && cur2 != nullptr) || (cur2 == nullptr && start != nullptr)) {
+                return false;
+            }
+            else if (start == nullptr && cur2 == nullptr) {
+                break;
+            }
+            else if (start->elem != cur2->elem) {
+                return false;
+            }
+            start = start->next;
+            cur2 = cur2->next;
+        }
+        return true;
+    }
+
+    bool operator !=(const MyList& otherList) {
+        return!(*this == otherList);
+    }
+
+    MyList& operator = (const MyList& otherList) {
+        this->clear();
+        this->head = new Node(otherList.head->elem);
+        Node* start = this->head;
+        Node* cur2 = otherList.head;
+        this->size = otherList.size;
+        cur2 = cur2->next;
+        
+        while (true)
+        {
+            if (cur2 == nullptr) {
+                break;
+            }
+            start->next = new Node(cur2->elem);
+            cur2 = cur2->next;
+            start = start->next;
+        }
+
+        return *this;
+    }
+
+    class  Iterator {
+    private:
+        Node* ptr;
+    public:
+        Iterator(Node* pointer) {
+            this->ptr = pointer;
+        }
+
+        T& operator*() {
+            return ptr->elem;
+        }
+
+        bool operator ==(const Iterator& other) {
+            return this->ptr == other.ptr;
+        }
+
+        bool operator !=(const Iterator& other) {
+            return this->ptr != other.ptr;
+        }
+
+        Node& operator =(const T& other) {
+            return this->ptr = other.ptr;
+        }
+
+        Iterator& operator++() {//Постфиксный 
+            ptr = ptr->next;
+            return *this;
+        }
+
+        Iterator& operator--() {
+            ptr = ptr->prev;
+            return *this;
+        }
+
+        Iterator& operator+(int value) {//Постфиксный 
+            for (int i = 0; i < value; i++)
+            {
+                ptr = ptr->next;
+            }
+            return *this;
+        }
+
+        Node* getNode() {
+            return ptr;
+        }
+
+        void setNode(Node* node) {
+            this->ptr = node;
+        }
+    };
+
+    Iterator begin() {
+        return Iterator(this->head);
+    }
+
+    Iterator end() {
+        return Iterator(nullptr);
+    }
+
+    Iterator erase(Iterator iter) {
+        Node* cur = iter.getNode();
+        
+        if (cur == head) {
+            cur->next->prev = nullptr;
+            head = cur->next;
+        }
+        else if (cur == tail) {
+            cur->prev->next = nullptr;
+            tail = cur->prev;
+        }
+        else {
+            cur->prev->next = cur->next;
+            cur->next->prev = cur->prev;
+        }
+
+        if (cur->next != nullptr) { 
+            iter.setNode(cur->next);
+        }
+
+        else {
+            iter.setNode(nullptr);
+        }
+        delete cur;
+        size--;
+        return iter;
+    }
+
+    Iterator erase(Iterator begin, Iterator end) {
+        Node* start = begin.getPtr();
+        Node* finish = end.getPtr();
+        if (start == head && finish == nullptr) {
+            this->clear();
+            return Iterator(nullptr);
+        }
+        if (start == head && finish != nullptr) {
+            finish->next->prev = nullptr;
+            this->head = finish->next;
+        }
+        else if (start != head && finish == nullptr) {
+            start->prev->next = nullptr;
+            this->tail = start->prev;
+        }
+        else {
+            start->prev->next = finish->next;
+            finish->next->prev = start->prev;
+        }
+
+        for (; begin != end + 1; size--) {
+            Iterator buf = begin;
+            begin++;
+            delete buf.getNode();
+        }
+    }
+
+    void erase(int index) {
+        if (empty() || index < 0) {
+            cout << "Ошибка!" << endl;
+            return;
+        }
+        Node* cur;
+        find(cur, index);
+
+        if (cur == head) {
+            cur->next->prev = nullptr;
+            head = cur->next;
+        }
+
+        else if (cur == tail) {
+            cur->prev->next = nullptr;
+            tail = cur->prev;
+        }
+        else {
+            cur->prev->next = cur->next;
+            cur->next->prev = cur->prev;
+        }
+        delete cur;
+        size--;
+    }
+};
+
+int main()
+{
+    setlocale(LC_ALL, "rus");
+    srand(time(NULL));
+
+    MyList <int> list1;
+    
+    list1.pushFront(3);
+    list1.pushFront(4);
+    list1.pushFront(5);
+    list1.pushBack(7);
+    list1.insertAfter(1, 54);
+    MyList <int> ::Iterator it1 = list1.begin()+3;
+    list1.show();
+    cout << endl;
+    --it1;
+    list1.erase(it1);
+    list1.show();
+};
