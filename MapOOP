@@ -1,0 +1,145 @@
+#include <iostream>
+#include <string>
+#define random(min,max) (min + rand() % (max - min + 1))
+
+using namespace std;
+
+template <typename T, typename T2>
+class MyMap {
+private:
+    class Node {
+    public:
+        T key;
+        T2 value;
+        Node* left = nullptr;
+        Node* right = nullptr;
+
+        Node(const T& key, T2 value):key(key), value(value), left(nullptr), right(nullptr) {}
+
+    };
+    Node* root = nullptr;
+
+    Node* insertRecursive(Node* node, const T key, const T2 value) {
+        if (node == nullptr) {
+            return new Node(key,value);
+        }
+
+        if (key < node->key) {
+            node->left = insertRecursive(node->left, key,value);
+        }
+
+        else if (key > node->key) {
+            node->right = insertRecursive(node->right,key, value);
+        }
+
+        return node;
+    }
+
+    void showRecursive(Node* node) {
+        if (node != nullptr) {
+            showRecursive(node->left);
+            cout << node->key << ":" << node->value << "  ";
+            showRecursive(node->right);
+        }
+        
+    }
+
+    bool findRecursive(Node* node, const T findKey) {
+        if (node == nullptr) {
+            return false;
+        }
+        
+        else if (findKey == node->key) {
+            return true;
+        }
+
+        else if (findKey < node->key) {
+            return findRecursive(node->left, findKey);
+        }
+
+        else if (findKey > node->key) {
+            return findRecursive(node->right, findKey);
+        }
+
+    }
+
+    Node* searchRecursive(Node* node, const T findKey) {
+        if (node == nullptr) {
+            return nullptr;
+        }
+
+        else if (findKey == node->key) {
+            return node;
+        }
+
+        else if (findKey < node->key) {
+            return searchRecursive(node->left, findKey);
+        }
+
+        else if (findKey > node->key) {
+            return searchRecursive(node->right, findKey);
+        }
+    }
+
+    void removeRecursive(const T findKey) {
+        Node* node = searchRecursive(root,findKey);
+        
+        if (node->left == nullptr && node->right == nullptr) {
+            delete node;
+        }
+    }
+        
+
+    /
+public:
+    MyMap():root(nullptr){}
+
+    ~MyMap() {}
+
+    T2& operator [](const T findKey) {
+        Node* node = searchRecursive(root,findKey);
+
+        if (node != nullptr) {
+            return node->value;
+        }
+        
+        else {
+            throw out_of_range("Бебра чмо");
+        }
+    }
+    
+    void insert(T key, T2 value) {
+        this->root = insertRecursive(root, key,value);
+    }
+
+    void show() {
+        showRecursive(root);
+    }
+
+    bool find(const T findKey) {
+        return findRecursive(root,findKey);
+
+    }
+
+    void remove(T findKey) {
+        removeRecursive(findKey);
+    }
+};
+
+int main()
+{
+    setlocale(LC_ALL, "rus");
+    srand(time(NULL));
+    MyMap <int,char> set1;
+    set1.insert(10,'g');
+    set1.insert(5, 'f');
+    set1.insert(15, 'r');
+    //cout << set1.find(6);
+    /*set1.show();
+    set1[10] = 'b';*/
+    set1.show();
+    set1.remove(15);
+    cout << endl;
+    set1.show();
+    
+}
