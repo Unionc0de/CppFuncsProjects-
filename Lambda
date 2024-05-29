@@ -1,0 +1,126 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>//для цикла for_each
+#define random(min,max) (min + rand() % (max - min + 1))
+using namespace std;
+
+class Person {
+private:
+    int id;
+    string name;
+public:
+    Person(int id,string name) :id(id), name(name) {}
+    
+    string get_name() {
+        return this->name;
+    }
+
+    int get_id() {
+        return this->id;
+    }
+
+    void print() {
+        cout << "ID: " << id << " Name: " << name << endl;
+    }
+};
+
+int main()
+{
+    setlocale(LC_ALL, "rus");
+    srand(time(NULL));
+
+    //auto add = [](int a, int b) {// auto - тип данных, add - название функции, [] - захват 
+    //    return a + b;
+    //};
+
+    //int x = 20;
+    //int y = 10;
+    //auto add = [x, y](int a) {//захват используются для переменных котрые находятся вне функции
+    //    return(x + y) * 5;
+    //};
+
+    //cout << add(5);
+
+    //int x = 10;
+    //auto increment = [&x]() {//Передача по ссылке чтобы менять значение перменной 
+    //    x++;
+    //};
+
+    //increment();
+    //cout << x;
+    
+    //auto multiply = [](double a, double b) -> double {//Через -> указываем тип данных, который возвращаем
+    //    return a * b;
+    //};
+
+    //double result = multiply(3.5, 2.2);
+    //cout << result;
+
+    //вывод элементов
+    //for_each(numbers.begin(), numbers.end(),//Внутрь for_each нужно передавать итератор на начало и на конец
+    //    [](int n) {//лямбда выражение с помощью которой будем проходить через вектор
+    //        cout << n << " ";
+    //    });
+    ////Сортировка элементов 
+    //sort(numbers.begin(), numbers.end(),//Внутрь for_each нужно передавать итератор на начало и на конец
+    //    [](int a, int b) {//лямба для сравнения двух элементов
+    //        return a < b;
+    //    });
+    ////вывод элементов
+    //for (auto el : numbers) {
+    //    cout << el << " ";
+    //}
+
+    //vector<int> numbers = { 3,45,23,55,65 };
+    //Person p1 (1, "Tom");
+    //Person p2 (2,"Dave");
+    //Person p3 (3,"John");
+    //Person p4 (4,"Bill");
+    //Person p5 (5,"Antony");
+    //vector<Person> people = { p2,p3,p5,p1,p4 };
+    ////вывод элементов
+   /* for (Person p : people) {
+        p.print();
+    }
+    cout << endl;*/
+    //sort(people.begin(), people.end(),//Сортировка по ID
+    //    [](Person p1, Person p2) {
+    //        return p1.get_id() < p2.get_id();
+    //    });
+
+    //sort(people.begin(), people.end(),//Сортировка по именам
+    //    [](Person p1, Person p2) {
+    //        return p1.get_name() < p2.get_name();
+    //    });
+    //
+    //for (Person p : people) {
+    //    p.print();
+    //}
+    
+    //#1 копиование четных элементов во 2 вектор 
+    //vector<int> v1 = { 0,1,2,3,4,5,6,7,8,9 };
+    //vector<int> v2;
+    //copy_if - копирование элементов в вектор 
+    //copy_if(v1.begin(), v1.end(), back_inserter(v2),//back_inserter - добавление элемента в конец веткора
+    //    [](auto el) {
+    //        return el % 2 == 0;
+    //    });
+    //for (auto el : v2) {
+    //    cout << el << " ";
+    //}
+
+    //#2 Преобозовать элементы массива 
+    vector<int> v1 = { 0,1,2,3,4,5,6,7,8,9 };
+    vector<int> v2;
+
+    transform(v1.begin(), v1.end(), back_inserter(v2),//transform - изменение элементов вектора согласно логике, прописанной в выражении лямбда 
+        [](auto el) {
+            return el*2;
+        });
+    for (auto el : v2) {
+        cout << el << " ";
+    }
+
+
+}
