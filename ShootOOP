@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <stack>
+#include <type_traits>//Для ограничения шаблона template
+#include <concepts>
 #define random(min,max) (min + rand() % (max - min + 1))
 using namespace std;
 
@@ -8,8 +10,10 @@ using namespace std;
 class Ammo {
 protected:
     int damage;
+    string name;
 public:
     virtual int getDamage() = 0;
+    virtual string getName() = 0;
 };
 
 class Ammo556 : public Ammo{
@@ -26,145 +30,224 @@ class Ammo919 : public Ammo {
 
 class Ammo556_BP : public Ammo556 {
 public:
-    Ammo556_BP(int damage) {
-        this->damage = damage;
+    Ammo556_BP() {
+        this->damage = 15;
+        this->name = "Ammo556_BP";
     }
 
     int getDamage() {
         return this->damage;
+    }
+
+    string getName() {
+        return this->name;
     }
 };
 
 class Ammo556_PS : public Ammo556 {
 public:
-    Ammo556_PS(int damage) {
-        this->damage = damage;
+    Ammo556_PS() {
+        this->damage = 10;
+        this->name = "Ammo556_PS";
     }
 
     int getDamage() {
         return this->damage;
+    }
+
+    string getName() {
+        return this->name;
     }
 };
 
 class Ammo762_BP : public Ammo762 {
 public:
-    Ammo762_BP(int damage) {
-        this->damage = damage;
+    Ammo762_BP() {
+        this->damage = 23;
+        this->name = "Ammo762_BP";
     }
 
     int getDamage() {
         return this->damage;
+    }
+
+    string getName() {
+        return this->name;
     }
 };
 
 class Ammo762_PS : public Ammo762 {
 public:
-    Ammo762_PS(int damage) {
-        this->damage = damage;
+    Ammo762_PS() {
+        this->damage = 17;
+        this->name = "Ammo762_PS";
     }
 
     int getDamage() {
         return this->damage;
+    }
+
+    string getName() {
+        return this->name;
     }
 };
 
 class Ammo919_BP : public Ammo919 {
 public:
-    Ammo919_BP(int damage) {
-        this->damage = damage;
+    Ammo919_BP() {
+        this->damage = 8;
+        this->name = "Ammo919_BP";
     }
 
     int getDamage() {
         return this->damage;
+    }
+
+    string getName() {
+        return this->name;
     }
 };
 
 class Ammo919_PS : public Ammo919 {
 public:
-    Ammo919_PS(int damage) {
-        this->damage = damage;
+    Ammo919_PS() {
+        this->damage = 5;
+        this->name = "Ammo919_PS";
     }
 
-    int getDamage() {
+    int getDamage() { 
         return this->damage;
     }
+
+    string getName() {
+        return this->name;
+    }
 };
 
+template <typename T>
+concept AmmoType = is_base_of<Ammo, remove_pointer_t<T>>::value && !is_same_v<Ammo, remove_pointer_t<T>>;//Проверка наследования от класса Ammo
+template <AmmoType T>
 class Magazine {
-    virtual void load() = 0;
-    virtual void unload() = 0;
-};
-
-class Magazine556 :public Magazine {
-protected:
-    stack <Ammo556> magazine;
+    //staic_assert(is_base_of<Ammo,T>::value, "T must be derived ")
+   /* virtual void load() = 0;
+    virtual void unload() = 0;*/
+    
     int amount;
+    stack<T> magazine;
 public:
-    Magazine556(int amount) {
-        this->amount = amount;
-    }
-
-    void load(Ammo556 ammo) {
-        if (amount > magazine.size()) {
+    Magazine(int amount) : amount(amount){}
+    void load(T ammo) {
+        if (magazine.size() >= amount) {
             throw out_of_range("Магазин переполнен!");
         }
         magazine.push(ammo);
-       
     }
-
-    void unload() {
-        magazine.pop();
-    }
-};
-
-class Magazine762 :public Magazine {
-protected:
-    stack <Ammo762> magazine;
-    int amount;
-public:
-    Magazine762(int amount) {
-        this->amount = amount;
-    }
-
-    void load(Ammo762 ammo) {
-        if (amount > magazine.size()) {
-            throw out_of_range("Магазин переполнен!");
+        
+    T unload() {
+        if (magazine.empty()) {
+            throw out_of_range("empty");
         }
-        magazine.push(ammo);
-
-    }
-
-    void unload() {
+        T bullet = magazine.top();
         magazine.pop();
+        return bullet;
     }
-};
-
-class Magazine919 :public Magazine {
-protected:
-    stack <Ammo919> magazine;
-    int amount;
-public:
-    Magazine919(int amount) {
-        this->amount = amount;
-    }
-
-    void load(Ammo919 ammo) {
-        if (amount > magazine.size()) {
-            throw out_of_range("Магазин переполнен!");
+    
+    stack<T> fullUnload() {
+        if (magazine.empty()) {
+            throw out_of_range("empty");
         }
-        magazine.push(ammo);
 
+        stack unloadBullets = magazine;
+        while (!magazine.empty()) {
+            magazine.pop();
+        }
     }
 
-    void unload() {
-        magazine.pop();
+    void info() {
+        cout << "Type: " << magazine.top()->getName() << endl;//typeid - узнать имя класса
+        cout << "Bullets: " << magazine.size() << endl;
     }
 };
 
+//class Magazine556 :public Magazine {
+//protected:
+//    stack <Ammo556> magazine;
+//    int amount;
+//public:
+//    Magazine556(int amount) {
+//        this->amount = amount;
+//    }
+//
+//    void load(Ammo556 ammo) {
+//        if (amount > magazine.size()) {
+//            throw out_of_range("Магазин переполнен!");
+//        }
+//        magazine.push(ammo);
+//       
+//    }
+//
+//    void unload() {
+//        magazine.pop();
+//    }
+//};
+//
+//class Magazine762 :public Magazine {
+//protected:
+//    stack <Ammo762> magazine;
+//    int amount;
+//public:
+//    Magazine762(int amount) {
+//        this->amount = amount;
+//    }
+//
+//    void load(Ammo762 ammo) {
+//        if (amount > magazine.size()) {
+//            throw out_of_range("Магазин переполнен!");
+//        }
+//        magazine.push(ammo);
+//
+//    }
+//
+//    void unload() {
+//        magazine.pop();
+//    }
+//};
+//
+//class Magazine919 :public Magazine {
+//protected:
+//    stack <Ammo919> magazine;
+//    int amount;
+//public:
+//    Magazine919(int amount) {
+//        this->amount = amount;
+//    }
+//
+//    void load(Ammo919 ammo) {
+//        if (amount > magazine.size()) {
+//            throw out_of_range("Магазин переполнен!");
+//        }
+//        magazine.push(ammo);
+//
+//    }
+//
+//    void unload() {
+//        magazine.pop();
+//    }
+//};
 
 int main()
 {
     setlocale(LC_ALL, "rus");
     srand(time(NULL));
-    Ammo556_BP ammo1(50);
+    Magazine<Ammo556*> m556(10);
+    for (int i = 0; i < 3; i++)
+    {   
+        m556.load(new Ammo556_BP);
+        m556.load(new Ammo556_PS);
+    }
+    m556.info();
+    m556.unload();
+    m556.info();
+
+
 }
