@@ -235,6 +235,52 @@ public:
 //    }
 //};
 
+class Weapon {
+private:
+    int fireRate;
+    int range;
+    int meleDamage;
+public:
+    virtual void shoot() = 0;
+};
+
+class MachineGun :public Weapon {
+
+};
+
+class AK47:public MachineGun {
+
+};
+
+class M4A1:public MachineGun {
+    
+};
+
+class Pistol :public Weapon {
+
+};
+
+class Glock17 :public Pistol {
+
+};
+
+class USP :public Pistol {
+
+};
+
+class SubmachineGun :public Weapon {
+
+};
+
+class MP5 :public SubmachineGun {
+
+};
+
+class UMP45 : public SubmachineGun {
+
+};
+
+
 int main()
 {
     setlocale(LC_ALL, "rus");
