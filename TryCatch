@@ -1,0 +1,26 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#define random(min,max) (min + rand() % (max - min + 1))
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "rus");
+    srand(time(NULL));
+
+    ifstream in;
+    in.exceptions(ifstream::badbit | ifstream::failbit);//Проверка на наличие файла  
+    
+    try {//Типо try except в пайтоне, если на каком то этапе вылетает ошибка - программа переходит к коду в catch
+        cout << "Попытка открыть файл" << endl;
+        in.open("text.txt");
+        cout << "Файл успешно открыт" << endl;
+    }
+
+    catch (ifstream::failure& ex) {//exception - класс, в котором находяться все исключения 
+        cout << ex.what() << endl;//метод what выводит информацию об ошибке
+        cout << ex.code() << endl;
+        cout << "Ошибка открытия файла!" << endl;
+    }
+}
