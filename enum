@@ -1,0 +1,55 @@
+#include <iostream>
+#include <string>
+#define random(min,max) (min + rand() % (max - min + 1))
+using namespace std;
+
+enum PCState {//enum - Перечесление, логические числа 
+    ON,//Варианты перечесления 
+    OFF,
+    GIBERNATTION, 
+    SLEEP_MODE
+};
+
+
+class Road {
+public:
+    enum Speed {
+        LOW = 40,//Задаем численное значение для enum
+        MEDIUM = 60,
+        HIGH = 90
+    };
+    string name;
+    Speed limit;
+public:
+    Road(string name, Speed limit) {
+        this->name = name;
+        this->limit = limit;
+    }
+
+    Speed getLimit() {
+        return limit;
+    }
+};
+
+class PC {
+private:
+    int state;//1 - on, 0 - off, 2 - gib, 3 - sleep mode
+public:
+
+};
+
+int main()
+{
+    setlocale(LC_ALL, "rus");
+    srand(time(NULL));
+    //cout << PCState::ON;//Вывод вариантов перечесления 
+    //PCState currentState = PCState::OFF;//Запись значения enum в переменную 
+    //if (currentState == PCState::ON) {//Проверка значения enum
+    //    cout << "PC on" << endl;
+    //}
+    //if (currentState == PCState::OFF) {//Проверка значения enum
+    //    cout << "PC off" << endl;
+    //}
+    Road r1("City road", Road::Speed::MEDIUM);
+    //cout << Road::HIGH;//Вызов enum если он находиться внутри класса
+}
