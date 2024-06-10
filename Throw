@@ -1,0 +1,69 @@
+#include <iostream>
+#include <string>
+#define random(min,max) (min + rand() % (max - min + 1))
+using namespace std;
+
+class MyException: public exception {
+private:
+    int dataState;
+public:
+    MyException(const char *msg,int data):exception(msg), dataState(data) {}
+
+    int getDataState() {
+        return this->dataState;
+    }
+};
+
+class MyException2 : public exception {
+public:
+    MyException2(const char* msg) :exception(msg) {}
+
+};
+
+void foo1(int num) {
+    if (num < 0) {
+        throw MyException("Number below zero!",1);
+        //throw "Number below zero!";
+        //throw exception("Number below zero!");//Выкидывает исключение с типом данных после throw(Тип данных в throw и catch должны совпадать) 
+    }
+
+    else if (num == 1) {
+        throw MyException2("Number equals one!");
+    }
+    cout << "Value =" << num << endl;
+}
+int main()
+{
+    setlocale(LC_ALL, "rus");
+    srand(time(NULL));
+    try {//Попытаться 
+        foo1(1);
+    }
+    //Сначало обрабатывается обширные исключения, а потом более узкие 
+    
+    
+    catch (MyException2& ex) {//Выполнить в случае ошибки. В скобках указываем тип данных ошибки 
+        cout << "Catch 1 We catch: " << ex.what() << endl;
+    }
+    catch (MyException& ex) {//Множественное ветвление исключений 
+        cout << "Catch 2 We catch: " << ex.what() << endl;
+        cout << "Error state: " << ex.getDataState() << endl;
+    }
+    
+    catch (exception &ex) {//Выполнить в случае ошибки. В скобках указываем тип данных ошибки 
+        cout << "Catch 0 We catch: " << ex.what() << endl;
+    }
+
+    //catch (const char* ex) {//Множественное ветвление исключений 
+    //    cout << "Catch 3 We catch: " << ex << endl;
+    //}
+    //catch (int ex) {//Множественное ветвление исключений 
+    //    cout << "Catch 4 We catch: " << ex << endl;
+    //}
+    //
+    //catch (...) {//Как else(Работает для всех типов исключений) 
+    //    cout << "Catch 5 We catch any exception " << endl;
+    //}
+
+    
+}
