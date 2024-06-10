@@ -3,8 +3,7 @@
 #define random(min,max) (min + rand() % (max - min + 1))
 using namespace std;
 
-template <typename T>
-class MyBinaryTree {
+class MyClass {
 private:
 
 public:
