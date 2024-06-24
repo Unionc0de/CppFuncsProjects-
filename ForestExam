@@ -1,0 +1,170 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+#define random(min,max) (min + rand() % (max - min + 1))
+using namespace std;
+
+class Tree {
+public:
+    virtual ~Tree() = default;
+    virtual void setAge(unsigned int newAge) = 0;
+    virtual unsigned int getAge() = 0;
+    virtual void setTexture(string newName) = 0;
+    virtual string getTexture() = 0;
+    virtual int getID() = 0;
+};
+
+class Fir :public Tree {
+private:
+    int ID;
+    unsigned int age;
+    string texture;
+
+    static int lastID;
+public:
+    Fir(unsigned int age, string texture) :age(age), texture(texture), ID(lastID++) {
+        ofstream out("tree.txt");
+        if (out.is_open()) {
+            out << ID << ". Fir with age: " << age << " and texture: " << texture;
+        }
+        out.close();
+    }
+
+    void setAge(unsigned int newAge) {
+        age = newAge;
+    }
+
+    unsigned int getAge() {
+        return age;
+    }
+
+    void setTexture(string newName) {
+        texture = newName;
+    }
+
+    string getTexture() {
+        return texture;
+    }
+
+    int getID() {
+        return ID;
+    }
+
+    void info() {
+        cout << ID << ". Fir with age: " << age << " and texture: " << texture << endl;
+    }
+};
+
+class Pine :public Tree {
+private:
+    int ID;
+    unsigned int age;
+    string texture;
+
+    static int lastID;
+public:
+    Pine(unsigned int age, string texture) :age(age), texture(texture), ID(lastID++) {
+        ofstream out("tree.txt");
+        if (out.is_open()) {
+            out << ID << ". Fir with age: " << age << " and texture: " << texture;
+        }
+        out.close();
+    }
+
+    void setAge(unsigned int newAge) {
+        age = newAge;
+    }
+
+    unsigned int getAge() {
+        return age;
+    }
+
+    void setTexture(string newName) {
+        texture = newName;
+    }
+
+    string getTexture() {
+        return texture;
+    }
+
+    int getID() {
+        return ID;
+    }
+
+    void info() {
+        cout << ID << ". Fir with age: " << age << " and texture: " << texture << endl;
+    }
+};
+
+class Birch :public Tree {
+private:
+    int ID;
+    unsigned int age;
+    string texture;
+
+    static int lastID;
+public:
+    Birch(unsigned int age, string texture) :age(age), texture(texture), ID(lastID++) {
+        ofstream out("tree.txt");
+        if (out.is_open()) {
+            out << ID << ". Fir with age: " << age << " and texture: " << texture;
+        }
+        out.close();
+    }
+
+    void setAge(unsigned int newAge) {
+        age = newAge;
+    }
+
+    unsigned int getAge() {
+        return age;
+    }
+
+    void setTexture(string newName) {
+        texture = newName;
+    }
+
+    string getTexture() {
+        return texture;
+    }
+
+    int getID() {
+        return ID;
+    }
+
+    void info() {
+        cout << ID << ". Fir with age: " << age << " and texture: " << texture << endl;
+    }
+};
+
+class Forest {
+private:
+    int log;
+    vector <Tree*> trees;
+public:
+    ~Forest() {
+        for (auto el : trees) {
+            delete el;
+        }
+    }
+
+    void addTree(Tree* tree) {
+        trees.push_back(tree);
+    }
+
+    void deleteTree() {
+
+    }
+};
+
+int Fir::lastID = 1;
+int Pine::lastID = 1;
+int Birch::lastID = 1;
+
+int main()
+{
+    setlocale(LC_ALL, "rus");
+    srand(time(NULL));
+    Tree* f1 = new Fir(18, "Bebra");
+}
