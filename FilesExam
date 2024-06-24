@@ -1,0 +1,39 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <Windows.h>//Библиотека для вывода русского 
+#define random(min,max) (min + rand() % (max - min + 1))
+using namespace std;
+
+void readFile(string path) {//Передаем путь к файлу 
+    ifstream in(path);//Открываем поток на чтение(if), передаем туда путь
+    if (in.is_open()) {//Проверка, открыт ли поток
+        string str;
+        while (getline(in,str)) {//С помощью getline считываем информацию из файла.Первый аргумент - поток, Второй-строка, куда записываем
+            cout << str << endl;//Выводим строку, которую получили через cout
+        }
+    }
+    in.close();//Закрываем поток
+}
+
+void writeFile(string path) {
+    ofstream out(path,ios::app);//Открываем поток на запись(of), передаем туда путь.По умолчанию поток удаляет весь текст и записывает новый
+    //ios::app - сохраняет то, что было в файле и записывает другое
+    if (out.is_open()) {
+        for (int i = 0; i < 5; i++) {
+            out << "Another text " << i + 1 << endl;//Записываем в файл с помощью операторов <<
+        }
+    }
+
+    out.close();
+}
+
+int main()
+{
+    setlocale(LC_ALL, "rus");
+    srand(time(NULL));
+    SetConsoleCP(1251);//Для вывода в консоль русского
+    SetConsoleOutputCP(1251);
+    writeFile("text.txt");
+    readFile("text.txt");
+}
