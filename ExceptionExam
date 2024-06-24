@@ -1,0 +1,62 @@
+#include <iostream>
+#include <string>
+#define random(min,max) (min + rand() % (max - min + 1))
+using namespace std;
+
+class MyException :public exception {//Создание класса собственной ошибки
+private:
+    int number;
+public:
+    MyException(int number, string msg) :exception(msg.c_str()) {//c_str - переделывает стринг в масив char
+        this->number = number;
+    }
+
+    int getNumber() {
+        return this->number;
+    }
+};
+
+void foo(int num) {
+    if (num < 0) {
+        throw 5;//Выеинуть исключение
+    }
+    if (num == 0) {
+        throw MyException(52,"Число было равно 0");
+    }
+    if (num == 1) {
+        throw 'h';
+    }
+    cout << num << " is okay" << endl;
+}
+
+
+int main()
+{
+    setlocale(LC_ALL, "rus");
+    srand(time(NULL));
+    try {//Пробуем запустить код 
+        foo(0);
+    }
+
+    catch(int ex){//Отлавливаем ошибку. В скобках - тип данных ошибки, который указывается в throw(Допустим throw 5 - int)
+        cout << "Число меньше 0" << endl;
+    }
+
+    catch (char ex) {//Отлавливаем ошибку. В скобках - тип данных ошибки, который указывается в throw(Допустим throw 'h' - char)
+        cout << "Число ранво 0" << endl;
+    }
+
+    catch(MyException ex) {//Дочерние исключения должны быть выше базового
+        cout << ex.what() << endl;
+        foo(ex.getNumber() + 1);
+    }
+
+    catch (exception ex) {//Передаем класс ошибки. Сообщение хранится внутри exception(допустим exception("Число равно 1");)
+        cout << ex.what() << endl;//.what() - выводит сообщение, которое хранится внутри ошибки
+    }
+
+    catch (...) {//Для всех остальных ошибок, типо else 
+        cout << "Неизвестная ошибка" << endl;
+    }
+
+}
